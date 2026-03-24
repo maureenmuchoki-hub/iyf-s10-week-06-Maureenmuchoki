@@ -37,25 +37,20 @@ This project is a Weather Dashboard built using the OpenWeatherMap API. It allow
    const API_KEY = "YOUR_API_KEY";
 
 ## Lessons Learned
-How to work with APIs using fetch
-
-Handling asynchronous JavaScript with promises
-
-DOM manipulation using JavaScript
-
-Error handling in real-world applications
-
-Using localStorage to store recent searches
+- How to work with APIs using fetch
+- Handling asynchronous JavaScript with promises
+- DOM manipulation using JavaScript
+- Error handling in real-world applications
+- Using localStorage to store recent searches
 
 ## Challenges Faced
-What problems did you encounter and how did you solve them?
-Handling API errors when a city is not found
-Managing asynchronous data fetching
-Styling the UI for better user experience
-Ensuring accurate and clean data display
+- Handling API errors when a city is not found
+- Managing asynchronous data fetching
+- Styling the UI for better user experience
+- Ensuring accurate and clean data display
 
 ## Screenshots (optional)
-![Weather DashBoard Output](Screenshots/Weather-DashBoard-Output.png)
+![Weather DashBoard Output](screenshots/Weather-DashBoard-Output.png)
 
 ## Live Demo (if deployed)
-[View Live Demo](https://your-deployed-url.com)
+[Weather DashBoard](https://maureenmuchoki-hub.github.io/iyf-s10-week-06-Maureenmuchoki/index.html)
