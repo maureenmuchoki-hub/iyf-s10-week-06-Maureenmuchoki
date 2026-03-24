@@ -52,12 +52,5 @@ This project is a Weather Dashboard built using the OpenWeatherMap API. It allow
 ## Screenshots
 ![Weather-DashBoard-Output](screenshots/Weather-DashBoard-Output.png)
 
-![Weather Dashboard](screenshots/Weather-Dashboard-Output.png)
-
-![My To-Do List Output](screenshots/My-To-Do-List-Output.png)
-
-
 ## Live Demo (if deployed)
 [Weather DashBoard](https://maureenmuchoki-hub.github.io/iyf-s10-week-06-Maureenmuchoki/index.html)
-
-[My To-Do List App](https://maureenmuchoki-hub.github.io/iyf-s10-week-05-Maureenmuchoki/index.html)
