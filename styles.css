@@ -1,0 +1,151 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #1e1e2f;
+    color: white;
+}
+
+.app {
+    padding: 20px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+}
+
+.search-box input {
+    padding: 10px;
+    border-radius: 8px 0 0 8px;
+    border: none;
+    outline: none;
+}
+
+.search-box button {
+    padding: 10px;
+    border: none;
+    background: #4facfe;
+    color: white;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* MAIN CARD */
+.main-card {
+    flex: 1;
+    background: #2a2a40;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.main-card img {
+    width: 100px;
+}
+
+#date-time {
+    font-size: 0.9rem;
+    color: #bbb;
+    margin-bottom: 10px;
+}
+
+.details {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.sun-box {
+    margin-top: 15px;
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    background: #2a2a40;
+    padding: 15px;
+    border-radius: 15px;
+    width: 220px;
+    height: fit-content;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+#other-cities {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.city-card {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.city-card img {
+    width: 40px;
+}
+
+.city-card:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateX(5px);
+}
+
+/* POPUP */
+.popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff4d4d;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    padding: 15px;
+    color: #ccc;
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.footer p {
+    margin: 5px 0;
+}
+
+.footer:hover {
+    color: white;
+}

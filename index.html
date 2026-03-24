@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- TOP BAR -->
+    <header class="top-bar">
+        <h1>🌤 Weather Dashboard</h1>
+
+        <div class="search-box">
+            <input type="text" id="city-input" placeholder="Search city..." required>
+            <button id="search-btn">🔍</button>
+        </div>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <div class="container">
+
+        <!-- MAIN WEATHER -->
+        <div class="main-card">
+            <h2 id="city-name"></h2>
+            <p id="date-time"></p>
+
+            <img id="weather-icon">
+
+            <h1 id="temperature"></h1>
+            <p id="description"></p>
+
+            <div class="details">
+                <p>💨 Wind: <span id="wind"></span></p>
+                <p>💧 Humidity: <span id="humidity"></span></p>
+                <p>🌡 Feels like: <span id="feels-like"></span></p>
+                <p>🔽 Pressure: <span id="pressure"></span></p>
+            </div>
+
+            <div class="sun-box">
+                <p>🌅 Sunrise: <span id="sunrise"></span></p>
+                <p>🌇 Sunset: <span id="sunset"></span></p>
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <h3>Other Cities</h3>
+            <div id="other-cities"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- POPUP -->
+<div id="popup" class="popup hidden">
+    <p id="popup-message"></p>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <p>🌍 Weather Dashboard</p>
+    <p>&copy;2026 Built with ❤️ by Maureen Muchoki</p>
+    <p id="footer-time"></p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
