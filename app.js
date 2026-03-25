@@ -4,7 +4,9 @@ const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 const cityInput = document.getElementById("city-input");
 const searchBtn = document.getElementById("search-btn");
 
-// Popup
+// --------------------
+// POPUP
+// --------------------
 function showPopup(message) {
     const popup = document.getElementById("popup");
     const popupMessage = document.getElementById("popup-message");
@@ -17,7 +19,9 @@ function showPopup(message) {
     }, 3000);
 }
 
-// Fetch weather
+// --------------------
+// FETCH WEATHER
+// --------------------
 async function getWeather(city) {
     try {
         const res = await fetch(`${BASE_URL}?q=${city}&appid=${API_KEY}&units=metric`);
@@ -37,8 +41,11 @@ async function getWeather(city) {
     }
 }
 
-// Display weather
+// --------------------
+// DISPLAY WEATHER
+// --------------------
 function displayWeather(data) {
+
     document.getElementById("city-name").textContent =
         `${data.name}, ${data.sys.country}`;
 
@@ -63,55 +70,83 @@ function displayWeather(data) {
     document.getElementById("weather-icon").src =
         `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
-    const sunrise = new Date(data.sys.sunrise * 1000);
-    const sunset = new Date(data.sys.sunset * 1000);
+    // --------------------
+    // 🌍 CITY TIME (CORRECT FIX)
+    // --------------------
+    function updateCityTime() {
+        const now = new Date();
+
+        // Convert local time → UTC
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+
+        // Apply city timezone
+        const cityTime = new Date(utc + (data.timezone * 1000));
+
+        document.getElementById("date-time").textContent =
+            cityTime.toLocaleString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            });
+    }
+
+    // Reset interval to avoid multiple timers
+    if (window.cityTimeInterval) clearInterval(window.cityTimeInterval);
+
+    updateCityTime();
+    window.cityTimeInterval = setInterval(updateCityTime, 1000);
+
+    // --------------------
+    // 🌅 SUNRISE / SUNSET
+    // --------------------
+    const sunrise = new Date((data.sys.sunrise + data.timezone) * 1000);
+    const sunset = new Date((data.sys.sunset + data.timezone) * 1000);
 
     document.getElementById("sunrise").textContent =
-        sunrise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    document.getElementById("sunset").textContent =
-        sunset.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-// Date & time
-function updateDateTime() {
-    const now = new Date();
-
-    const formatted =
-        now.toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        }) + " • " +
-        now.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
+        sunrise.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
         });
 
-    document.getElementById("date-time").textContent = formatted;
+    document.getElementById("sunset").textContent =
+        sunset.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
 }
 
-setInterval(updateDateTime, 1000);
-updateDateTime();
-
-// Footer time
+// --------------------
+// FOOTER TIME (YOUR LOCAL TIME)
+// --------------------
 function updateFooterTime() {
     document.getElementById("footer-time").textContent =
-        "Local Time: " + new Date().toLocaleTimeString();
+        "Your Time: " + new Date().toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        });
 }
 
 setInterval(updateFooterTime, 1000);
 updateFooterTime();
 
-// Search
+// --------------------
+// SEARCH BUTTON
+// --------------------
 searchBtn.addEventListener("click", () => {
     const city = cityInput.value.trim();
     if (city) getWeather(city);
 });
 
-// Other cities
+// --------------------
+// OTHER CITIES
+// --------------------
 const cities = ["Nairobi", "London", "Tokyo", "Dubai", "Paris"];
 
 async function loadOtherCities() {
