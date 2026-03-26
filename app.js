@@ -101,23 +101,22 @@ function displayWeather(data) {
     updateCityTime();
     window.cityTimeInterval = setInterval(updateCityTime, 1000);
 
-    // --------------------
-    // 🌅 SUNRISE / SUNSET
-    // --------------------
-    const sunrise = new Date((data.sys.sunrise + data.timezone) * 1000);
-    const sunset = new Date((data.sys.sunset + data.timezone) * 1000);
+   // --------------------
+// 🌅 SUNRISE / SUNSET (FINAL CORRECT VERSION)
+// --------------------
+function formatTime(timestamp, timezone) {
+    return new Date((timestamp + timezone) * 1000).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "UTC"
+    });
+}
 
-    document.getElementById("sunrise").textContent =
-        sunrise.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
+document.getElementById("sunrise").textContent =
+    formatTime(data.sys.sunrise, data.timezone);
 
-    document.getElementById("sunset").textContent =
-        sunset.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
+document.getElementById("sunset").textContent =
+    formatTime(data.sys.sunset, data.timezone);
 }
 
 // --------------------
