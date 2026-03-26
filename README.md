@@ -53,4 +53,4 @@ This project is a Weather Dashboard built using the OpenWeatherMap API. It allow
 ![Weather DashBoard Output](screenshots/Weather-Dashboard-Output.png)
 
 ## Live Demo 
-[Weather DashBoard](https://maureenmuchoki-hub.github.io/iyf-s10-week-06-Maureenmuchoki)
+[Weather DashBoard](https://maureenmuchoki-hub.github.io/iyf-s10-week-06-Maureenmuchoki/index.html)
