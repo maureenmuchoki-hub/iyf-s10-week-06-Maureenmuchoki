@@ -1,12 +1,11 @@
 const API_KEY = "abd7816fa314d421f62a10469903329d";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+const FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast";
 
 const cityInput = document.getElementById("city-input");
 const searchBtn = document.getElementById("search-btn");
 
-// --------------------
 // POPUP
-// --------------------
 function showPopup(message) {
     const popup = document.getElementById("popup");
     const popupMessage = document.getElementById("popup-message");
@@ -19,9 +18,7 @@ function showPopup(message) {
     }, 3000);
 }
 
-// --------------------
-// FETCH WEATHER
-// --------------------
+// FETCH CURRENT WEATHER
 async function getWeather(city) {
     try {
         const res = await fetch(`${BASE_URL}?q=${city}&appid=${API_KEY}&units=metric`);
@@ -41,9 +38,24 @@ async function getWeather(city) {
     }
 }
 
-// --------------------
+// FETCH FORECAST
+async function getForecast(city) {
+    try {
+        const res = await fetch(`${FORECAST_URL}?q=${city}&appid=${API_KEY}&units=metric`);
+
+        if (!res.ok) {
+            throw new Error("Forecast not available");
+        }
+
+        const data = await res.json();
+        displayForecast(data);
+
+    } catch (err) {
+        showPopup("⚠️ Could not load forecast");
+    }
+}
+
 // DISPLAY WEATHER
-// --------------------
 function displayWeather(data) {
 
     document.getElementById("city-name").textContent =
@@ -70,82 +82,83 @@ function displayWeather(data) {
     document.getElementById("weather-icon").src =
         `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
-    // --------------------
-    // 🌍 CITY TIME (CORRECT FIX)
-    // --------------------
+    // CITY TIME
     function updateCityTime() {
         const now = new Date();
-
-        // Convert local time → UTC
         const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-
-        // Apply city timezone
         const cityTime = new Date(utc + (data.timezone * 1000));
 
         document.getElementById("date-time").textContent =
             cityTime.toLocaleString("en-US", {
                 weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
-                second: "2-digit",
-                hour12: true
+                second: "2-digit"
             });
     }
 
-    // Reset interval to avoid multiple timers
     if (window.cityTimeInterval) clearInterval(window.cityTimeInterval);
-
     updateCityTime();
     window.cityTimeInterval = setInterval(updateCityTime, 1000);
 
-   // --------------------
-// 🌅 SUNRISE / SUNSET (FINAL CORRECT VERSION)
-// --------------------
-function formatTime(timestamp, timezone) {
-    return new Date((timestamp + timezone) * 1000).toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "UTC"
+    // SUNRISE / SUNSET
+    function formatTime(timestamp, timezone) {
+        return new Date((timestamp + timezone) * 1000).toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZone: "UTC"
+        });
+    }
+
+    document.getElementById("sunrise").textContent =
+        formatTime(data.sys.sunrise, data.timezone);
+
+    document.getElementById("sunset").textContent =
+        formatTime(data.sys.sunset, data.timezone);
+}
+
+// DISPLAY FORECAST
+function displayForecast(data) {
+    const container = document.getElementById("forecast");
+    container.innerHTML = "";
+
+    const dailyData = data.list.filter(item =>
+        item.dt_txt.includes("12:00:00")
+    );
+
+    dailyData.forEach(day => {
+        const date = new Date(day.dt_txt);
+
+        container.innerHTML += `
+            <div class="forecast-card">
+                <p>${date.toLocaleDateString("en-US", { weekday: "short" })}</p>
+                <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png">
+                <p>${Math.round(day.main.temp)}°C</p>
+                <p>${day.weather[0].description}</p>
+            </div>
+        `;
     });
 }
 
-document.getElementById("sunrise").textContent =
-    formatTime(data.sys.sunrise, data.timezone);
-
-document.getElementById("sunset").textContent =
-    formatTime(data.sys.sunset, data.timezone);
-}
-
-// --------------------
-// FOOTER TIME (YOUR LOCAL TIME)
-// --------------------
+// FOOTER TIME
 function updateFooterTime() {
     document.getElementById("footer-time").textContent =
-        "Your Time: " + new Date().toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            hour12: true
-        });
+        "Your Time: " + new Date().toLocaleTimeString("en-US");
 }
 
 setInterval(updateFooterTime, 1000);
 updateFooterTime();
 
-// --------------------
-// SEARCH BUTTON
-// --------------------
+// SEARCH
 searchBtn.addEventListener("click", () => {
     const city = cityInput.value.trim();
-    if (city) getWeather(city);
+    if (city) {
+        getWeather(city);
+        getForecast(city);
+    }
 });
 
-// --------------------
 // OTHER CITIES
-// --------------------
 const cities = ["Nairobi", "London", "Tokyo", "Dubai", "Paris"];
 
 async function loadOtherCities() {
@@ -156,13 +169,18 @@ async function loadOtherCities() {
         const data = await res.json();
 
         container.innerHTML += `
-            <div class="city-card" onclick="getWeather('${city}')">
+            <div class="city-card" onclick="searchCity('${city}')">
                 <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}.png">
                 <span>${data.name}</span>
                 <span>${Math.round(data.main.temp)}°C</span>
             </div>
         `;
     }
+}
+
+function searchCity(city) {
+    getWeather(city);
+    getForecast(city);
 }
 
 loadOtherCities();
